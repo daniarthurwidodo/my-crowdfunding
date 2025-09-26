@@ -1,7 +1,7 @@
 // Type definitions for the crowdfunding application
 
 export interface User {
-  id: number;
+  id: string;
   username: string;
   email: string;
   password: string;
@@ -10,12 +10,12 @@ export interface User {
 }
 
 export interface Project {
-  id: number;
+  id: string;
   title: string;
   description: string | null;
   goalAmount: number;
   currentAmount: number | null;
-  creatorId: number;
+  creatorId: string;
   createdAt: Date;
   updatedAt: Date | null;
   deadline: number | null;

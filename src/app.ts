@@ -40,7 +40,7 @@ passport.serializeUser((user: any, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser(async (id: number, done) => {
+passport.deserializeUser(async (id: string, done) => {
   try {
     const user = await UserService.findById(id);
     done(null, user);
@@ -57,12 +57,12 @@ passport.use(new LocalStrategy({
       const user = await UserService.findByEmail(email);
 
       if (!user) {
-        return done(null, false, { message: 'Incorrect email or password.' });
+        return done(null, false, { message: 'User not found' });
       }
 
       const isValidPassword = await UserService.validatePassword(password, user.password);
       if (!isValidPassword) {
-        return done(null, false, { message: 'Incorrect email or password.' });
+        return done(null, false, { message: 'Invalid credentials' });
       }
 
       return done(null, user);

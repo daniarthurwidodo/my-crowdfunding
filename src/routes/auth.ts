@@ -86,16 +86,35 @@ router.post('/register', validateBody(userSchemas.register), AuthController.regi
  *       200:
  *         description: Login successful
  *       401:
- *         description: Invalid credentials
+ *         description: Invalid credentials (wrong password)
+ *       404:
+ *         description: User not found
  */
 router.post('/login',
   validateBody(userSchemas.login),
-  passport.authenticate('local', {
-    successRedirect: '/auth/dashboard',
-    failureRedirect: '/auth/login',
-    failureFlash: true
-  }),
-  AuthController.login
+  (req, res, next) => {
+    passport.authenticate('local', (err: any, user: any, info: any) => {
+      if (err) {
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+      if (!user) {
+        // Check if the error is due to user not found vs wrong password
+        const isUserNotFound = info && info.message === 'User not found';
+        const statusCode = isUserNotFound ? 404 : 401;
+        const errorMessage = isUserNotFound ? 'User not found' : 'Invalid credentials';
+        return res.status(statusCode).json({ message: errorMessage });
+      }
+      req.logIn(user, (err) => {
+        if (err) {
+          return res.status(500).json({ message: 'Login failed' });
+        }
+        return res.json({
+          message: 'Login successful',
+          data: { user: { id: user.id, username: user.username, email: user.email } }
+        });
+      });
+    })(req, res, next);
+  }
 );
 
 /**

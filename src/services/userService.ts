@@ -3,12 +3,14 @@ import { users } from '../db/schema';
 import { eq } from 'drizzle-orm';
 import { hashPassword, comparePassword } from '../utils/password';
 import type { User, CreateUserRequest } from '../types';
+import { ulid } from 'ulid';
 
 export class UserService {
   static async createUser(userData: CreateUserRequest): Promise<User> {
     const hashedPassword = await hashPassword(userData.password);
 
     const [newUser] = await db.insert(users).values({
+      id: ulid(),
       username: userData.username,
       email: userData.email,
       password: hashedPassword,
@@ -27,7 +29,7 @@ export class UserService {
     return userResult[0] || null;
   }
 
-  static async findById(id: number): Promise<User | null> {
+  static async findById(id: string): Promise<User | null> {
     const userResult = await db.select().from(users).where(eq(users.id, id)).limit(1);
     return userResult[0] || null;
   }

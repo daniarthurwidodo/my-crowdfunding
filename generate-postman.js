@@ -29,7 +29,7 @@ const options = {
         User: {
           type: 'object',
           properties: {
-            id: { type: 'integer', example: 1 },
+            id: { type: 'string', example: '01HXXXXXXXXXXXXXXXXXXXXX' },
             username: { type: 'string', example: 'johndoe' },
             email: { type: 'string', format: 'email', example: 'john@example.com' },
             createdAt: { type: 'string', format: 'date-time' },
@@ -39,12 +39,12 @@ const options = {
         Project: {
           type: 'object',
           properties: {
-            id: { type: 'integer', example: 1 },
+            id: { type: 'string', example: '01HXXXXXXXXXXXXXXXXXXXXX' },
             title: { type: 'string', example: 'My Awesome Project' },
             description: { type: 'string', nullable: true, example: 'A description of my project' },
             goalAmount: { type: 'integer', example: 10000 },
             currentAmount: { type: 'integer', nullable: true, example: 2500 },
-            creatorId: { type: 'integer', example: 1 },
+            creatorId: { type: 'string', example: '01HXXXXXXXXXXXXXXXXXXXXX' },
             createdAt: { type: 'string', format: 'date-time' },
             updatedAt: { type: 'string', format: 'date-time', nullable: true },
             deadline: { type: 'integer', nullable: true, example: 1672531200 },

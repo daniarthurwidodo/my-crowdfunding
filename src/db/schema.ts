@@ -1,9 +1,9 @@
-import { pgTable, text, integer, serial, timestamp, boolean, primaryKey } from 'drizzle-orm/pg-core';
+import { pgTable, text, integer, timestamp, boolean, primaryKey } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 
 // User table
 export const users = pgTable('users', {
-  id: serial('id').primaryKey(),
+  id: text('id').primaryKey().$defaultFn(() => sql`gen_random_uuid()::text`),
   username: text('username').notNull().unique(),
   email: text('email').notNull().unique(),
   password: text('password').notNull(),
@@ -18,7 +18,7 @@ export const users = pgTable('users', {
 // Session table for storing session data if needed
 export const sessions = pgTable('sessions', {
   id: text('id').primaryKey(),
-  userId: integer('user_id')
+  userId: text('user_id')
     .notNull()
     .references(() => users.id),
   expiresAt: integer('expires_at').notNull(),
@@ -26,12 +26,12 @@ export const sessions = pgTable('sessions', {
 
 // For a crowdfunding app, we might also want projects/campaigns
 export const projects = pgTable('projects', {
-  id: serial('id').primaryKey(),
+  id: text('id').primaryKey().$defaultFn(() => sql`gen_random_uuid()::text`),
   title: text('title').notNull(),
   description: text('description'),
   goalAmount: integer('goal_amount').notNull(), // In cents
   currentAmount: integer('current_amount').default(0),
-  creatorId: integer('creator_id')
+  creatorId: text('creator_id')
     .notNull()
     .references(() => users.id),
   createdAt: timestamp('created_at')
