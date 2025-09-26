@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: crowdfunding-postgres
+    environment:
+      POSTGRES_DB: crowdfunding
+      POSTGRES_USER: crowdfunding_user
+      POSTGRES_PASSWORD: crowdfunding_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - crowdfunding-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crowdfunding_user -d crowdfunding"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: crowdfunding-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@crowdfunding.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - crowdfunding-network
+    restart: unless-stopped
+
+  postgres-test:
+    image: postgres:15-alpine
+    container_name: crowdfunding-postgres-test
+    environment:
+      POSTGRES_DB: crowdfunding_test
+      POSTGRES_USER: crowdfunding_user
+      POSTGRES_PASSWORD: crowdfunding_password
+    ports:
+      - "5433:5432"
+    networks:
+      - crowdfunding-network
+    restart: unless-stopped
+    profiles:
+      - test
+
+volumes:
+  postgres_data:
+
+networks:
+  crowdfunding-network:
+    driver: bridge
