@@ -189,7 +189,8 @@
     "test:coverage": "jest --coverage",
     "db:push": "drizzle-kit push",
     "db:migrate": "node migrate.js",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "postman:generate": "node generate-postman.js"
   },
   "keywords": [],
   "author": "",
@@ -221,6 +222,7 @@
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
     "jest": "^30.1.3",
+    "openapi-to-postmanv2": "^5.3.1",
     "ts-jest": "^29.4.4"
   }
 }

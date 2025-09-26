@@ -97,6 +97,6 @@ Thumbs.db
 *.swo
 *~
 
-# Temporary files
-tmp/
-temp/
+# Generated files
+openapi-spec.json
+postman-collection.json
