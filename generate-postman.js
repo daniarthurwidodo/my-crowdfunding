@@ -62,9 +62,9 @@ const options = {
         },
         LoginRequest: {
           type: 'object',
-          required: ['username', 'password'],
+          required: ['email', 'password'],
           properties: {
-            username: { type: 'string', example: 'johndoe' },
+            email: { type: 'string', format: 'email', example: 'john@example.com' },
             password: { type: 'string', example: 'password123' },
           },
         },

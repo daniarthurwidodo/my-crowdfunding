@@ -22,6 +22,11 @@ export class UserService {
     return userResult[0] || null;
   }
 
+  static async findByEmail(email: string): Promise<User | null> {
+    const userResult = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    return userResult[0] || null;
+  }
+
   static async findById(id: number): Promise<User | null> {
     const userResult = await db.select().from(users).where(eq(users.id, id)).limit(1);
     return userResult[0] || null;

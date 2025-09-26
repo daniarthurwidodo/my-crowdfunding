@@ -74,11 +74,12 @@ router.post('/register', validateBody(userSchemas.register), AuthController.regi
  *           schema:
  *             type: object
  *             required:
- *               - username
+ *               - email
  *               - password
  *             properties:
- *               username:
+ *               email:
  *                 type: string
+ *                 format: email
  *               password:
  *                 type: string
  *     responses:

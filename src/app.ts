@@ -49,18 +49,20 @@ passport.deserializeUser(async (id: number, done) => {
   }
 });
 
-passport.use(new LocalStrategy(
-  async (username, password, done) => {
+passport.use(new LocalStrategy({
+  usernameField: 'email'
+},
+  async (email, password, done) => {
     try {
-      const user = await UserService.findByUsername(username);
+      const user = await UserService.findByEmail(email);
 
       if (!user) {
-        return done(null, false, { message: 'Incorrect username or password.' });
+        return done(null, false, { message: 'Incorrect email or password.' });
       }
 
       const isValidPassword = await UserService.validatePassword(password, user.password);
       if (!isValidPassword) {
-        return done(null, false, { message: 'Incorrect username or password.' });
+        return done(null, false, { message: 'Incorrect email or password.' });
       }
 
       return done(null, user);
