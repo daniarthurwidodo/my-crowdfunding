@@ -9,27 +9,35 @@ My Crowdfunding Platform is a comprehensive Node.js/TypeScript backend applicati
 ### Technology Stack
 - **Runtime**: Node.js 18+ with TypeScript
 - **Web Framework**: Express.js with comprehensive middleware
-- **Database**: SQLite with Drizzle ORM for type-safe queries
-- **Authentication**: Passport.js with local strategy and express-session
+- **Database**: PostgreSQL with Drizzle ORM for type-safe queries
+- **Authentication**: Passport.js with local strategy (email-based)
 - **Security**: bcrypt for password hashing, Joi for validation
+- **ID Generation**: ULID for universally unique identifiers
+- **Logging**: Pino with pino-pretty for structured logging
 - **Testing**: Jest with ts-jest for unit testing
 - **Documentation**: Swagger/OpenAPI with interactive UI
 - **Environment**: dotenv for configuration management
+- **Containerization**: Podman for PostgreSQL database
 
 ### Project Structure
 ```
 my-crowdfunding/
 ├── package.json          # Dependencies, scripts, and Jest config
 ├── tsconfig.json         # TypeScript configuration
+├── drizzle.config.ts     # Drizzle ORM configuration
+├── generate-postman.js   # Postman collection generator
+├── postman-collection.json # Generated Postman collection (ignored)
+├── openapi-spec.json     # Generated OpenAPI spec (ignored)
 ├── .env                  # Environment variables (local)
 ├── .env.example          # Environment template
 ├── README.md             # Comprehensive project documentation
-├── sqlite.db             # SQLite database file
+├── setup-podman.ps1      # Podman PostgreSQL setup script
+├── docs/                 # Project documentation
 ├── src/
 │   ├── app.ts            # Express app configuration & middleware
-│   ├── index.ts          # Main entry point
+│   ├── index.ts          # Main entry point with graceful shutdown
 │   ├── config/
-│   │   ├── database.ts   # Database connection with env support
+│   │   ├── database.ts   # PostgreSQL connection with env support
 │   │   └── swagger.ts    # API documentation configuration
 │   ├── controllers/
 │   │   ├── authController.ts    # Authentication HTTP handlers
@@ -42,15 +50,16 @@ my-crowdfunding/
 │   │   ├── auth.ts       # Authentication routes with validation
 │   │   └── projects.ts   # Project routes with validation
 │   ├── services/
-│   │   ├── userService.ts    # User business logic
-│   │   └── projectService.ts # Project business logic
+│   │   ├── userService.ts    # User business logic with ULID
+│   │   └── projectService.ts # Project business logic with ULID
 │   ├── types/
 │   │   └── index.ts      # TypeScript type definitions
 │   ├── utils/
-│   │   └── password.ts   # Password hashing utilities
+│   │   ├── password.ts   # Password hashing utilities
+│   │   └── logger.ts     # Pino logging configuration
 │   └── db/
-│       ├── index.ts      # Database configuration
-│       └── schema.ts     # Database schema definitions
+│       ├── index.ts      # Database setup
+│       └── schema.ts     # PostgreSQL schema with ULID IDs
 ├── tests/
 │   ├── setup.ts          # Jest test environment setup
 │   ├── controllers/      # Controller tests (planned)

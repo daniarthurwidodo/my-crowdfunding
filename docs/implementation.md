@@ -9,10 +9,10 @@ This document outlines the technical implementation of the My Crowdfunding Platf
 ### System Architecture
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Client Apps   │────│   Express API   │────│   SQLite DB     │
+│   Client Apps   │────│   Express API   │────│ PostgreSQL DB   │
 │                 │    │                 │    │                 │
-│ - Web Frontend  │    │ - REST Endpoints│    │ - Users         │
-│ - Mobile Apps   │    │ - Auth Middleware│    │ - Projects      │
+│ - Web Frontend  │    │ - REST Endpoints│    │ - Users (ULID)  │
+│ - Mobile Apps   │    │ - Auth Middleware│    │ - Projects(ULID)│
 │ - Admin Panel   │    │ - Swagger Docs   │    │ - Sessions      │
 │ - API Docs      │    │ - Validation MW  │    │                 │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
@@ -26,13 +26,13 @@ This document outlines the technical implementation of the My Crowdfunding Platf
 - **Node.js**: Runtime environment (version 18+ recommended)
 
 #### Database Layer
-- **SQLite**: Lightweight relational database
+- **PostgreSQL**: Robust relational database for production
 - **Drizzle ORM**: Type-safe SQL query builder
-- **Better SQLite3**: High-performance SQLite driver
+- **ULID**: Universally Unique Lexicographically Sortable Identifiers
 
 #### Authentication & Security
 - **Passport.js**: Authentication middleware
-- **Local Strategy**: Username/password authentication
+- **Local Strategy**: Email/password authentication
 - **express-session**: Session management
 - **bcrypt**: Password hashing with configurable rounds
 - **Joi**: Input validation and sanitization

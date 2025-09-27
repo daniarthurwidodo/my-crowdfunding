@@ -4,13 +4,16 @@ A Node.js/TypeScript backend application for a crowdfunding platform with user a
 
 ## Features
 
-- 🔐 **User Authentication**: Secure registration and login with Passport.js
+- 🔐 **Email-Based Authentication**: Secure registration and login with Passport.js using email/password
 - 📋 **Project Management**: Create and manage crowdfunding projects
+- 🆔 **ULID Identifiers**: Universally Unique Lexicographically Sortable Identifiers for all entities
 - ✅ **Input Validation**: Comprehensive validation using Joi
 - 📚 **API Documentation**: Interactive Swagger/OpenAPI documentation
 - 🧪 **Unit Testing**: Jest test suite with coverage reporting
 - 🔒 **Security**: Password hashing, session management, and environment variables
+- 📝 **Structured Logging**: Pino logger with pretty printing in development
 - 🏗️ **Modular Architecture**: Clean separation of concerns with controllers, services, and middleware
+- 📮 **Postman Integration**: Auto-generated Postman collections for API testing
 
 ## Tech Stack
 
@@ -18,10 +21,13 @@ A Node.js/TypeScript backend application for a crowdfunding platform with user a
 - **Language**: TypeScript
 - **Framework**: Express.js
 - **Database**: PostgreSQL with Drizzle ORM
-- **Authentication**: Passport.js with local strategy
+- **Authentication**: Passport.js with local strategy (email-based)
 - **Validation**: Joi
 - **Documentation**: Swagger/OpenAPI
+- **Logging**: Pino with pino-pretty
+- **ID Generation**: ULID
 - **Testing**: Jest with ts-jest
+- **Containerization**: Podman/Docker
 - **Environment**: dotenv
 
 ## Installation
@@ -105,7 +111,7 @@ Create a `.env` file in the root directory:
 
 ```env
 # Server Configuration
-PORT=3000
+PORT=5000
 NODE_ENV=development
 
 # Database Configuration
@@ -113,6 +119,9 @@ DATABASE_URL=postgresql://crowdfunding_user:crowdfunding_password@localhost:5432
 
 # Session Configuration
 SESSION_SECRET=your-super-secret-session-key-change-this-in-production
+
+# Logging Configuration
+LOG_LEVEL=info
 
 # Security Configuration
 BCRYPT_ROUNDS=10
@@ -143,14 +152,25 @@ CORS_ORIGIN=http://localhost:3000
 
 Access the interactive API documentation at:
 ```
-http://localhost:3000/api-docs
+http://localhost:5000/api-docs
 ```
 
 The documentation includes:
 - Detailed endpoint descriptions
-- Request/response schemas
+- Request/response schemas with ULID examples
 - Authentication requirements
 - Interactive testing interface
+- Error response codes (404 for user not found, 401 for invalid credentials)
+
+### Postman Collection
+
+Generate and import a Postman collection for API testing:
+
+```bash
+npm run postman:generate
+```
+
+This creates `postman-collection.json` with all endpoints pre-configured.
 
 ## Project Structure
 
@@ -235,8 +255,9 @@ npm run test:watch
 - Jest for testing
 
 ### Database
-- SQLite for development and testing
+- PostgreSQL for production and development
 - Drizzle ORM for type-safe queries
+- ULID primary keys for all entities
 - Automatic schema management
 
 ## Deployment
